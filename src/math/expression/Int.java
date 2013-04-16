@@ -23,5 +23,10 @@ public class Int extends Expression {
     public int calculate(int x) {
         return value;
     }
+    
+    @Override
+    public String toString() {
+        return Integer.toString(this.value);
+    }
 
 }

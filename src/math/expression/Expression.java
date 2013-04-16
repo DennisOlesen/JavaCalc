@@ -24,5 +24,4 @@ public abstract class Expression {
      * @return  y
      */
     public abstract int calculate(final int x);
-    
 }

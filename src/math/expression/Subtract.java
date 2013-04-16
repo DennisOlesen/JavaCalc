@@ -10,6 +10,11 @@ public class Subtract extends Expression {
     private Expression a;
     private Expression b;
     
+    public Subtract(Expression a) {
+        super(Expression.X_COMES_AFTER);
+        this.a = a;
+    }
+    
     public Subtract(Expression a, Expression b) {
         super(Expression.X_IS_UNDEFINED);
         this.a = a;
@@ -31,6 +36,18 @@ public class Subtract extends Expression {
                 return x - a.calculate(x);
             default:
                 return a.calculate(x) - b.calculate(x);
+        }
+    }
+    
+    @Override
+    public String toString() {
+        switch (flag) {
+            case Expression.X_COMES_AFTER:
+                return a.toString() + " - X";
+            case Expression.X_COMES_BEFORE:
+                return "X - " + a.toString();
+            default:
+                return a.toString() + " - " + b.toString();
         }
     }
 
