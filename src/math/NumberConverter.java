@@ -31,6 +31,7 @@ public class NumberConverter {
             n /= 2;
         }
         
+        binary.reverse();
         return binary.toString();
     }
     
@@ -40,15 +41,25 @@ public class NumberConverter {
      * @return  decimal String
      */
     public String toDecimal() {
-        StringBuilder decimal = new StringBuilder();
+        int decimal = 0;
         int n = this.number;
         
-        for (int i = 0; i < Integer.toString(n).length(); i++) {
-            decimal.append(Math.pow(n % 10, i));
+        int digits = ciffers(n);
+        for (int i = 0; i < digits; i++) {
+            decimal += (n % 10) * ((int) Math.pow(2, i));
             n /= 10;
         }
         
-        return decimal.toString();
+        return Integer.toString(decimal);
     }
     
+    private int ciffers(int n) {
+        int count = 0;
+        while (n != 0) {
+            n /= 10;
+            count++;
+        }
+        return count;
+    }
+     
 }
