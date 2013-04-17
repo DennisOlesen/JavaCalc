@@ -1,29 +1,29 @@
 package plot;
 
-import math.expression.Add;
 import math.expression.Int;
 import math.expression.Multiply;
+import math.expression.Power;
 
 /**
- * A class that defines a linear plot.
+ * A class that defines an exponential plot.
  * 
  * @author christoffer
  */
-public class LinearPlot extends Plot {
+public class ExponentialPlot extends Plot {
 
     private int a;
     private int b;
     
     /**
-     * A linear plot is defined by the formula f(x) = a*x+b.
+     * An exponential plot is defined by the formula f(x) = b*a^x.
      * 
      * @param a integer
      * @param b integer
      */
-    public LinearPlot(int a, int b) {
-        super(new Add(
-                new Multiply(new Int(a)),
-                new Int(b))
+    public ExponentialPlot(int a, int b) {
+        super(new Multiply(
+                new Int(b),
+                new Power(new Int(a)))
         );
         this.a = a;
         this.b = b;

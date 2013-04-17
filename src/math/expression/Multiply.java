@@ -10,19 +10,24 @@ public class Multiply extends Expression {
     private Expression a;
     private Expression b;
     
+    /**
+     * Creates a multiplication expression a*x.
+     * 
+     * @param   a   Integer
+     */
     public Multiply(Expression a) {
         super(Expression.X_COMES_AFTER);
         this.a = a;
     }
     
+    /**
+     * Creates a multiplication expression a*b.
+     * 
+     * @param   a   Integer
+     * @param   b   Integer
+     */
     public Multiply(Expression a, Expression b) {
         super(Expression.X_IS_UNDEFINED);
-        this.a = a;
-        this.b = b;
-    }
-    
-    public Multiply(Expression a, Expression b, String flag) {
-        super(flag);
         this.a = a;
         this.b = b;
     }

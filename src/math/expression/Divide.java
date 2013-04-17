@@ -10,21 +10,38 @@ public class Divide extends Expression {
     private Expression a;
     private Expression b;
     
+    /**
+     * Creates a divide expression a / x.
+     * 
+     * @param   a   Integer
+     */
     public Divide(Expression a) {
         super(Expression.X_COMES_AFTER);
         this.a = a;
     }
     
+    /**
+     * Creates a divide expression a / b.
+     * 
+     * @param   a   Integer
+     * @param   b   Integer
+     */
     public Divide(Expression a, Expression b) {
         super(Expression.X_IS_UNDEFINED);
         this.a = a;
         this.b = b;
     }
     
-    public Divide(Expression a, Expression b, String flag) {
+    /**
+     * Creates a divide expression. The flag determines if the expression is
+     * a / x or x / a.
+     * 
+     * @param   a       Integer
+     * @param   flag    String - see constants in Expression class
+     */
+    public Divide(Expression a, String flag) {
         super(flag);
         this.a = a;
-        this.b = b;
     }
     
     @Override

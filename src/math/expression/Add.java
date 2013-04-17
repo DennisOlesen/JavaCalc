@@ -10,19 +10,24 @@ public class Add extends Expression {
     private Expression a;
     private Expression b;
     
+    /**
+     * Creates an addition expression a+x.
+     * 
+     * @param   a   Integer
+     */
     public Add(Expression a) {
         super(Expression.X_COMES_AFTER);
         this.a = a;
     }
     
+    /**
+     * Creates an addition expression a+b.
+     * 
+     * @param   a   Integer
+     * @param   b   Integer
+     */
     public Add(Expression a, Expression b) {
         super(Expression.X_IS_UNDEFINED);
-        this.a = a;
-        this.b = b;
-    }
-    
-    public Add(Expression a, Expression b, String flag) {
-        super(flag);
         this.a = a;
         this.b = b;
     }
