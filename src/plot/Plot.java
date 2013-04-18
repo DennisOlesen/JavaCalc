@@ -63,12 +63,39 @@ public class Plot extends JPanel {
             int x1 = i;
             int y1 = formula.calculate(x1);
             
-            int x = (w/2) + (int) (x1*c_x);
-            int y = (h/2) - (int) (y1*c_y);
+            int x = (w/2) + ((int) (x1*c_x));
+            int y = (h/2) - ((int) (y1*c_y));
             
             //g.drawLine(x1 * c_x, (h/2) - (y1 * c_y), x2 * c_x, (h/2) - (y2 * c_y));
-            if (y1 < h)
+            if (y <= h && y >= 0)
                 g.fillOval(x, y, 2, 2);
+        }
+        
+        /* Draw labels on both axes. */
+        g.setColor(Color.BLACK);
+        int amountOfLabels_x = 10;
+        int amountOfLabels_y = 10;
+        
+        int labelIncrement_x = w / amountOfLabels_x;
+        int labelIncrement_y = h / amountOfLabels_y;
+        
+        /* Draw labels on x-axis. */
+        for (int i = min; i < max; i += labelIncrement_x) {
+            int x = (w/2) + ((int) (i*c_x));
+            int y = (h/2);
+            
+            g.drawLine(x, y - 5, x, y +5);
+            g.drawString(Integer.toString(i), x - 10, y - 20);
+        }
+        
+        /* Draw labels on x-axis. */
+        for (int i = min; i < max; i += labelIncrement_y) {
+            int x = (w/2);
+            int valueOfy = formula.calculate(i);
+            int y = (h/2) - ((int) (valueOfy*c_y));
+            
+            g.drawLine(x - 5, y, x + 5, y);
+            g.drawString(Integer.toString(valueOfy), x - 30, y + 7);
         }
     }
     
@@ -77,7 +104,7 @@ public class Plot extends JPanel {
      */
     public void showPlot() {   
         JFrame frame = new JFrame(toString());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.setSize(PLOT_FRAME_WIDTH, PLOT_FRAME_HEIGHT);
         frame.setContentPane(this);
         frame.setVisible(true);
