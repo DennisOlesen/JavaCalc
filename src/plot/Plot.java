@@ -20,15 +20,19 @@ public class Plot extends JPanel {
     public final static int PLOT_FRAME_WIDTH = 600;
     
     private Expression formula;
+    private int min;
+    private int max;
     
     /**
      * Constructs a new plot. A plot is a defined by a formula of only one
-     * variable (x).
+     * variable (x). X-axis defaults to interval [-10; 10].
      * 
      * @param   formula Expression
      */
     public Plot(Expression formula) {
         this.formula = formula;
+        this.min = -10;
+        this.max = 10;
     }
     
     /**
@@ -40,9 +44,6 @@ public class Plot extends JPanel {
         
         int h = PLOT_FRAME_HEIGHT - 25;
         int w = PLOT_FRAME_WIDTH;
-        
-        int min = -200;
-        int max = 200;
         
         // Draw plot axes
         g.drawLine(0, h/2, w, h/2); // x
@@ -60,15 +61,19 @@ public class Plot extends JPanel {
         g.setColor(Color.RED);
         
         for (int i = min; i < max; i++) {
-            int x1 = i;
-            int y1 = formula.calculate(x1);
+            int valueOfx1 = i;
+            int valueOfy1 = formula.calculate(valueOfx1);
             
-            int x = (w/2) + ((int) (x1*c_x));
-            int y = (h/2) - ((int) (y1*c_y));
+            int valueOfx2 = i+1;
+            int valueOfy2 = formula.calculate(valueOfx2);
             
-            //g.drawLine(x1 * c_x, (h/2) - (y1 * c_y), x2 * c_x, (h/2) - (y2 * c_y));
-            if (y <= h && y >= 0)
-                g.fillOval(x, y, 2, 2);
+            int x1 = (w/2) + ((int) (valueOfx1*c_x));
+            int y1 = (h/2) - ((int) (valueOfy1*c_y));
+            
+            int x2 = (w/2) + ((int) (valueOfx2*c_x));
+            int y2 = (h/2) - ((int) (valueOfy2*c_y));
+            
+            g.drawLine(x1, y1, x2, y2);
         }
         
         /* Draw labels on both axes. */
@@ -76,27 +81,48 @@ public class Plot extends JPanel {
         int amountOfLabels_x = 10;
         int amountOfLabels_y = 10;
         
-        int labelIncrement_x = w / amountOfLabels_x;
-        int labelIncrement_y = h / amountOfLabels_y;
+        int max_y = getMaxY();
+        int labelIncrement_x = (max - min) / amountOfLabels_x;
+        int labelIncrement_y = (max_y) / amountOfLabels_y;
         
         /* Draw labels on x-axis. */
         for (int i = min; i < max; i += labelIncrement_x) {
             int x = (w/2) + ((int) (i*c_x));
             int y = (h/2);
             
+            /* Don't draw zero. */
+            if (i == 0)
+                continue;
+            
             g.drawLine(x, y - 5, x, y +5);
-            g.drawString(Integer.toString(i), x - 10, y - 20);
+            g.drawString(Integer.toString(i), x - 5, y - 15);
         }
         
-        /* Draw labels on x-axis. */
-        for (int i = min; i < max; i += labelIncrement_y) {
-            int x = (w/2);
-            int valueOfy = formula.calculate(i);
-            int y = (h/2) - ((int) (valueOfy*c_y));
+        /* Draw labels on y-axis. */
+        int x = (w/2);
+        for (int i = -max_y; i <= max_y; i += labelIncrement_y) {
+            int y = (h/2) - ((int) (i*c_y));
+            
+            /* Don't draw zero. */
+            if (i == 0)
+                continue;
             
             g.drawLine(x - 5, y, x + 5, y);
-            g.drawString(Integer.toString(valueOfy), x - 30, y + 7);
+            g.drawString(Integer.toString(i), x - 30, y + 7);
         }
+    }
+    
+    private int getMaxY() {
+        int temp;
+        int max_y = formula.calculate(min);
+        
+        for (int i = min + 1; i <= max; i++) {
+            temp = formula.calculate(i);
+            if (temp > max_y)
+                max_y = temp;
+        }
+        
+        return max_y;
     }
     
     /**
@@ -104,10 +130,21 @@ public class Plot extends JPanel {
      */
     public void showPlot() {   
         JFrame frame = new JFrame(toString());
-        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(PLOT_FRAME_WIDTH, PLOT_FRAME_HEIGHT);
         frame.setContentPane(this);
         frame.setVisible(true);
+    }
+    
+    /**
+     * Set the borders of the x-axis.
+     * 
+     * @param from  Integer
+     * @param to    Integer
+     */
+    public void setRange(int from, int to) {
+        this.min = from;
+        this.max = to;
     }
     
     @Override
